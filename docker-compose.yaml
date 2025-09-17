@@ -1,0 +1,42 @@
+services:
+  traffic-manager-api:
+    container_name: traffic-manager-api
+    build: 
+      context: .
+      target: development
+    ports:
+      - "8000:8000"
+    networks:
+      - traffic-manager-api-network
+    restart: unless-stopped
+    # depends_on: 
+    #   db: 
+    #     condition: service_healthy
+    env_file:
+      - .env
+
+  # db:
+  #   hostname: database
+  #   container_name: postgresSQL
+  #   image: postgres:16-bullseye
+  #   ports:
+  #     - "5436:5432"
+  #   networks:
+  #     - traffic-manager-api-network
+  #   environment:
+  #     POSTGRES_USER: ${DATABASE_USER}
+  #     POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+  #     POSTGRES_DB: ${DATABASE_NAME}
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER}"]
+  #     interval: 1s
+  #     timeout: 1s
+  #     retries: 5
+  #   volumes:
+  #     - /home/vigoncalves/dev/postgres-data:/var/lib/postgresql/data
+  #   env_file:
+  #     - .env
+
+networks:
+  traffic-manager-api-network:
+    driver: bridge

@@ -1,0 +1,419 @@
+{
+	"info": {
+		"_postman_id": "meta-api-collection",
+		"name": "Meta API - traffic Manager",
+		"description": "Collection com todas as chamadas para a API do Meta utilizadas na aplicação traffic Manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticação e Tokens",
+			"item": [
+				{
+					"name": "Obter Token de Longa Duração",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{meta_base_url}}/{{meta_version}}/oauth/access_token?grant_type=fb_exchange_token&client_id={{meta_app_id}}&client_secret={{meta_app_secret}}&fb_exchange_token={{short_lived_token}}",
+							"host": ["{{meta_base_url}}"],
+							"path": ["{{meta_version}}", "oauth", "access_token"],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "fb_exchange_token"
+								},
+								{
+									"key": "client_id",
+									"value": "{{meta_app_id}}"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{meta_app_secret}}"
+								},
+								{
+									"key": "fb_exchange_token",
+									"value": "{{short_lived_token}}"
+								}
+							]
+						},
+						"description": "Troca um token de curta duração por um token de longa duração"
+					}
+				},
+				{
+					"name": "Verificar Validade do Token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{meta_base_url}}/{{meta_version}}/me?fields=id,name&access_token={{meta_access_token}}",
+							"host": ["{{meta_base_url}}"],
+							"path": ["{{meta_version}}", "me"],
+							"query": [
+								{
+									"key": "fields",
+									"value": "id,name"
+								},
+								{
+									"key": "access_token",
+									"value": "{{meta_access_token}}"
+								}
+							]
+						},
+						"description": "Verifica se o token atual é válido consultando o endpoint /me"
+					}
+				},
+				{
+					"name": "Obter Informações de Debug do Token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{meta_base_url}}/{{meta_version}}/debug_token?input_token={{meta_access_token}}&access_token={{meta_app_id}}|{{meta_app_secret}}",
+							"host": ["{{meta_base_url}}"],
+							"path": ["{{meta_version}}", "debug_token"],
+							"query": [
+								{
+									"key": "input_token",
+									"value": "{{meta_access_token}}"
+								},
+								{
+									"key": "access_token",
+									"value": "{{meta_app_id}}|{{meta_app_secret}}"
+								}
+							]
+						},
+						"description": "Obtém informações detalhadas sobre um token do Meta"
+					}
+				}
+			]
+		},
+		{
+			"name": "Business Managers",
+			"item": [
+				{
+					"name": "Listar Business Managers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{meta_base_url}}/{{meta_version}}/me/businesses?limit=100&access_token={{meta_access_token}}",
+							"host": ["{{meta_base_url}}"],
+							"path": ["{{meta_version}}", "me", "businesses"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "100"
+								},
+								{
+									"key": "access_token",
+									"value": "{{meta_access_token}}"
+								}
+							]
+						},
+						"description": "Lista todos os Business Managers associados ao usuário"
+					}
+				}
+			]
+		},
+		{
+			"name": "Contas de Anúncios",
+			"item": [
+				{
+					"name": "Obter Contas de Anúncios por Business ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{meta_base_url}}/{{meta_version}}/{{business_id}}/owned_ad_accounts?fields=id,name&access_token={{meta_access_token}}",
+							"host": ["{{meta_base_url}}"],
+							"path": ["{{meta_version}}", "{{business_id}}", "owned_ad_accounts"],
+							"query": [
+								{
+									"key": "fields",
+									"value": "id,name"
+								},
+								{
+									"key": "access_token",
+									"value": "{{meta_access_token}}"
+								}
+							]
+						},
+						"description": "Obtém todas as contas de anúncios pertencentes a um Business Manager específico"
+					}
+				},
+				{
+					"name": "Batch - Obter Contas de Anúncios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{meta_base_url}}/{{meta_version}}?Batch={{batch_fields}}&access_token={{meta_access_token}}",
+							"host": ["{{meta_base_url}}"],
+							"path": ["{{meta_version}}"],
+							"query": [
+								{
+									"key": "Batch",
+									"value": "{{batch_fields}}"
+								},
+								{
+									"key": "access_token",
+									"value": "{{meta_access_token}}"
+								}
+							]
+						},
+						"description": "Executa múltiplas requisições em lote para obter contas de anúncios"
+					}
+				}
+			]
+		},
+		{
+			"name": "Campanhas",
+			"item": [
+				{
+					"name": "Obter Campanhas por Account ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{meta_base_url}}/{{meta_version}}/act_{{account_id}}/campaigns?fields=id,name,status&effective_status=['ACTIVE']&access_token={{meta_access_token}}",
+							"host": ["{{meta_base_url}}"],
+							"path": ["{{meta_version}}", "act_{{account_id}}", "campaigns"],
+							"query": [
+								{
+									"key": "fields",
+									"value": "id,name,status"
+								},
+								{
+									"key": "effective_status",
+									"value": "['ACTIVE']"
+								},
+								{
+									"key": "access_token",
+									"value": "{{meta_access_token}}"
+								}
+							]
+						},
+						"description": "Obtém todas as campanhas ativas de uma conta de anúncios específica"
+					}
+				}
+			]
+		},
+		{
+			"name": "Insights de Contas de Anúncios",
+			"item": [
+				{
+					"name": "Obter Insights por Account ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{meta_base_url}}/{{meta_version}}/act_{{account_id}}/insights?fields=account_id,account_name,impressions,reach,frequency&time_range={\"since\":\"{{start_date}}\",\"until\":\"{{end_date}}\"}&access_token={{meta_access_token}}",
+							"host": ["{{meta_base_url}}"],
+							"path": ["{{meta_version}}", "act_{{account_id}}", "insights"],
+							"query": [
+								{
+									"key": "fields",
+									"value": "account_id,account_name,impressions,reach,frequency"
+								},
+								{
+									"key": "time_range",
+									"value": "{\"since\":\"{{start_date}}\",\"until\":\"{{end_date}}\"}"
+								},
+								{
+									"key": "access_token",
+									"value": "{{meta_access_token}}"
+								}
+							]
+						},
+						"description": "Obtém insights de uma conta de anúncios específica com filtros de data"
+					}
+				},
+				{
+					"name": "Obter Insights com Filtros Personalizados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{meta_base_url}}/{{meta_version}}/act_{{account_id}}/insights?{{custom_params}}&time_range={\"since\":\"{{start_date}}\",\"until\":\"{{end_date}}\"}&access_token={{meta_access_token}}",
+							"host": ["{{meta_base_url}}"],
+							"path": ["{{meta_version}}", "act_{{account_id}}", "insights"],
+							"query": [
+								{
+									"key": "custom_params",
+									"value": "{{custom_params}}"
+								},
+								{
+									"key": "time_range",
+									"value": "{\"since\":\"{{start_date}}\",\"until\":\"{{end_date}}\"}"
+								},
+								{
+									"key": "access_token",
+									"value": "{{meta_access_token}}"
+								}
+							]
+						},
+						"description": "Obtém insights com parâmetros personalizados (fields, filtering, etc.)"
+					}
+				}
+			]
+		},
+		{
+			"name": "Insights de Campanhas",
+			"item": [
+				{
+					"name": "Obter Insights de Campanha por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{meta_base_url}}/{{meta_version}}/{{campaign_id}}/insights?fields=account_id,account_name,campaign_name,campaign_id,spend,impressions,frequency,reach,objective,clicks,actions,cost_per_action_type&filtering=[{\"field\":\"objective\",\"operator\":\"IN\",\"value\":[\"OUTCOME_ENGAGEMENT\"]}]&time_range={\"since\":\"{{start_date}}\",\"until\":\"{{end_date}}\"}&access_token={{meta_access_token}}",
+							"host": ["{{meta_base_url}}"],
+							"path": ["{{meta_version}}", "{{campaign_id}}", "insights"],
+							"query": [
+								{
+									"key": "fields",
+									"value": "account_id,account_name,campaign_name,campaign_id,spend,impressions,frequency,reach,objective,clicks,actions,cost_per_action_type"
+								},
+								{
+									"key": "filtering",
+									"value": "[{\"field\":\"objective\",\"operator\":\"IN\",\"value\":[\"OUTCOME_ENGAGEMENT\"]}]"
+								},
+								{
+									"key": "time_range",
+									"value": "{\"since\":\"{{start_date}}\",\"until\":\"{{end_date}}\"}"
+								},
+								{
+									"key": "access_token",
+									"value": "{{meta_access_token}}"
+								}
+							]
+						},
+						"description": "Obtém insights detalhados de uma campanha específica com filtros de objetivo e período"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "meta_base_url",
+			"value": "https://graph.facebook.com",
+			"type": "string"
+		},
+		{
+			"key": "meta_version",
+			"value": "v22.0",
+			"type": "string"
+		},
+		{
+			"key": "meta_access_token",
+			"value": "your_access_token_here",
+			"type": "string"
+		},
+		{
+			"key": "meta_app_id",
+			"value": "your_app_id_here",
+			"type": "string"
+		},
+		{
+			"key": "meta_app_secret",
+			"value": "your_app_secret_here",
+			"type": "string"
+		},
+		{
+			"key": "short_lived_token",
+			"value": "your_short_lived_token_here",
+			"type": "string"
+		},
+		{
+			"key": "business_id",
+			"value": "your_business_id_here",
+			"type": "string"
+		},
+		{
+			"key": "account_id",
+			"value": "your_account_id_here",
+			"type": "string"
+		},
+		{
+			"key": "campaign_id",
+			"value": "your_campaign_id_here",
+			"type": "string"
+		},
+		{
+			"key": "start_date",
+			"value": "2024-01-01",
+			"type": "string"
+		},
+		{
+			"key": "end_date",
+			"value": "2024-01-31",
+			"type": "string"
+		},
+		{
+			"key": "batch_fields",
+			"value": "[{\"method\":\"GET\",\"relative_url\":\"123/owned_ad_accounts?fields=id,name\"}]",
+			"type": "string"
+		},
+		{
+			"key": "custom_params",
+			"value": "fields=account_id,account_name,impressions,reach,frequency",
+			"type": "string"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Script executado antes de cada requisição",
+					"console.log('Executando requisição para:', pm.request.url);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Script executado após cada requisição",
+					"pm.test('Status code is 200', function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					"pm.test('Response has data', function () {",
+					"    const jsonData = pm.response.json();",
+					"    pm.expect(jsonData).to.have.property('data');",
+					"});"
+				]
+			}
+		}
+	]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
